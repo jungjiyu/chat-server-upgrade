@@ -36,12 +36,13 @@ public class AccountAppService {
 
     //나중에 분리시키자
     public RegisterResponse.Success joinNormalType(RegisterRequest.Create joinDto, String invitationCode) {
-        validateRegisterRequest(joinDto);
+//        validateRegisterRequest(joinDto);
 
         Account newAccount = joinDto.toAccount(passwordEncoder);
 
-        Invitation invitation = validationService.validateInvitationCode(invitationCode);
-        Memberr publisher = invitation.getPublisher();
+//        Invitation invitation = validationService.validateInvitationCode(invitationCode);
+//        Memberr publisher = invitation.getPublisher();
+        Memberr publisher = null; // invitation.getPublisher() 제거
 
         Memberr newMember = Memberr.of(
                 joinDto.getName(),
@@ -51,13 +52,13 @@ public class AccountAppService {
                 newAccount,
                 publisher);
 
-        Optional.ofNullable(invitation.getSubscriber())
-                .map(AnonymousUser::getComment)
-                .ifPresent(newMember::addComment);
+//        Optional.ofNullable(invitation.getSubscriber())
+//                .map(AnonymousUser::getComment)
+//                .ifPresent(newMember::addComment);
 
         Memberr member = memberRepository.saveAndFlush(newMember);
-        memberRepository.updateAncestor(member.getId());
-        invitation.setJoined();
+//        memberRepository.updateAncestor(member.getId());
+//        invitation.setJoined();
 
 
         String systemToken = jwtProvider.createSystemToken();
@@ -75,41 +76,41 @@ public class AccountAppService {
     }
 
     private void validateRegisterRequest(RegisterRequest.Create joinDto) { //TODO 도메인 서비스로 이동
-        if (!joinDto.isValidPassword()) {
-            throw new RuntimeException( "비밀번호는 8~15자리의 영문, 숫자, 특수문자 조합이어야 합니다.");
-        }
-
-        String email = joinDto.getEmail();
-        String phone = joinDto.getPhoneNumber();
-        String identityVerificationToken = joinDto.getIdentityVerificationToken();
-
-        Region region = joinDto.getRegion();
-
-        EmailVerificationContext.VerificationData verificationData = emailVerificationContext.get(identityVerificationToken);
-
-        if (verificationData == null) {
-            throw new RuntimeException( "인증번호가 잘못 되었습니다.");
-        }
-
-        String emailOrPhone = verificationData.getValue();
-
-        if (emailOrPhone == null || !emailOrPhone.equals(email) && !emailOrPhone.equals(phone)) {
-            throw new RuntimeException( "유효하지않은 요청입니다.");
-        }
-
-        if (region == Region.KR && phone == null) {
-            throw new RuntimeException("한국인 사용자는 전화번호를 필수로 입력해야합니다.");
-        } else if (region == Region.OTHER && email == null) {
-            throw new RuntimeException( "외국인 사용자는 이메일을 필수로 입력해야합니다.");
-        }
-
-        if (memberRepository.existsByNickname(joinDto.getNickname())) {
-            throw new RuntimeException("이미 사용중인 닉네임입니다.");
-        }
-
-        if (accountRepository.existsByEmailOrPhoneNumber(email, phone)) {
-            throw new RuntimeException("이미 가입된 이메일 또는 전화번호입니다.");
-        }
+//        if (!joinDto.isValidPassword()) {
+//            throw new RuntimeException( "비밀번호는 8~15자리의 영문, 숫자, 특수문자 조합이어야 합니다.");
+//        }
+//
+//        String email = joinDto.getEmail();
+//        String phone = joinDto.getPhoneNumber();
+//        String identityVerificationToken = joinDto.getIdentityVerificationToken();
+//
+//        Region region = joinDto.getRegion();
+//
+//        EmailVerificationContext.VerificationData verificationData = emailVerificationContext.get(identityVerificationToken);
+//
+//        if (verificationData == null) {
+//            throw new RuntimeException( "인증번호가 잘못 되었습니다.");
+//        }
+//
+//        String emailOrPhone = verificationData.getValue();
+//
+//        if (emailOrPhone == null || !emailOrPhone.equals(email) && !emailOrPhone.equals(phone)) {
+//            throw new RuntimeException( "유효하지않은 요청입니다.");
+//        }
+//
+//        if (region == Region.KR && phone == null) {
+//            throw new RuntimeException("한국인 사용자는 전화번호를 필수로 입력해야합니다.");
+//        } else if (region == Region.OTHER && email == null) {
+//            throw new RuntimeException( "외국인 사용자는 이메일을 필수로 입력해야합니다.");
+//        }
+//
+//        if (memberRepository.existsByNickname(joinDto.getNickname())) {
+//            throw new RuntimeException("이미 사용중인 닉네임입니다.");
+//        }
+//
+//        if (accountRepository.existsByEmailOrPhoneNumber(email, phone)) {
+//            throw new RuntimeException("이미 가입된 이메일 또는 전화번호입니다.");
+//        }
 
     }
 
