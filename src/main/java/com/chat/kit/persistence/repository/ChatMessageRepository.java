@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
-    List<ChatMessage> findBychatRoom(ChatRoom chatRoom);
+    List<ChatMessage> findByChatRoom(ChatRoom chatRoom);
+
     @Query("SELECT cm from ChatMessage cm left " +
             "join ChatRoom cr on cr.id=cm.chatRoom.id " +
             "left join MemberChatRoom mc on mc.chatRoom.id=cr.id and mc.member.id=:memberId " +
@@ -18,6 +19,6 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> 
     )
     List<ChatMessage> findUnReadMsgByMemberId(Long memberId);
 
-    @Query("SELECT cm from ChatMessage cm where cm.chatRoom.id=:roomId order by cm.sentAt desc limit 1")
-    Optional<ChatMessage> findLastMsgByChatRoomId(Long roomId);
+    @Query("SELECT cm from ChatMessage cm where cm.chatRoom.id=:roomId order by cm.sentAt desc")
+    Optional<ChatMessage> findFirstByChatRoomIdOrderBySentAtDesc(Long roomId);
 }

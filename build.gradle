@@ -9,7 +9,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
 
@@ -28,6 +28,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:3.3.4'
 //	implementation 'org.springframework.security:spring-security-messaging:6.3.3'
 
+	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
 
 	runtimeOnly 'org.postgresql:postgresql'

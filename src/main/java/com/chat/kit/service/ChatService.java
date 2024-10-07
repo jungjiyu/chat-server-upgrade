@@ -45,7 +45,7 @@ public class ChatService {
         Optional<Long> one2OneRoomNumber = memberChatRoomRepository.findOne2OneRoomNumber(request.getMemberIds().get(0), request.getMemberIds().get(1));
 
         if(one2OneRoomNumber.isPresent()){
-            Optional<ChatMessage> lastMsgBox = chatMessageRepository.findLastMsgByChatRoomId(one2OneRoomNumber.get());
+            Optional<ChatMessage> lastMsgBox = chatMessageRepository.findFirstByChatRoomIdOrderBySentAtDesc(one2OneRoomNumber.get());
             String lastMsg = "";
 
             if(lastMsgBox.isPresent()){
@@ -89,7 +89,7 @@ public class ChatService {
     public List<ChatMessage> findChatMessages(Long chatRoomId){
         Optional<ChatRoom> findChatRoom = chatRoomRepository.findById(chatRoomId);
         if(findChatRoom.isPresent()){
-            return chatMessageRepository.findBychatRoom(findChatRoom.get());
+            return chatMessageRepository.findByChatRoom(findChatRoom.get());
         }else{
             throw new NoChatRoomException("The chat room id you requested does not exist");
         }
@@ -110,7 +110,7 @@ public class ChatService {
                 List<Long> memberIds = chatRoom.getMemberChatRoomOne().stream().map(r->r.getMember().getId()).toList();//특정 방에 참여한 회원정보 조회
 
                 String lastMsg = "";
-                Optional<ChatMessage> lastMsgBox = chatMessageRepository.findLastMsgByChatRoomId(chatRoom.getId());
+                Optional<ChatMessage> lastMsgBox = chatMessageRepository.findFirstByChatRoomIdOrderBySentAtDesc(chatRoom.getId());
                 if(lastMsgBox.isPresent()){
                     lastMsg = lastMsgBox.get().getMessage();
                 }
