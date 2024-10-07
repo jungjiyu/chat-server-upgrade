@@ -22,6 +22,7 @@ public class SecurityConfig {
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                         .requestMatchers("/ws/**").permitAll() // 웹소켓 연결 허용
                         .requestMatchers("/h2-console/**").permitAll() // H2 콘솔 접근 허용
+                        .requestMatchers("/accounts/**").permitAll() // 토큰 발급
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)

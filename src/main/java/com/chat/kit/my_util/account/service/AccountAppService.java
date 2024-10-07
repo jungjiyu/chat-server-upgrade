@@ -13,10 +13,13 @@ import com.chat.kit.my_util.account.repository.MemberRepositoryy;
 import com.chat.kit.my_util.account.util.EmailVerificationContext;
 import com.chat.kit.my_util.account.util.JwtProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
@@ -24,6 +27,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class AccountAppService {
 
     private final AccountRepository accountRepository;
@@ -67,13 +71,24 @@ public class AccountAppService {
 
         HttpEntity<MemberSynRequest> request = new HttpEntity<>(MemberSynRequest.builder().id(member.getId()).build(), headers);
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.postForEntity("http://chat.storyb.kr/members", request, Void.class);
 
-        return RegisterResponse.Success.builder().phone(newAccount.getPhoneNumber())
+        // 디버깅을 위한 로그 출력
+        log.info("Request Headers: {}", headers);
+        log.info("Request Body: {}", request.getBody());
+
+        try {
+            ResponseEntity<Void> response = restTemplate.postForEntity("http://chat.storyb.kr/members", request, Void.class);
+            log.info("Response Status: {}", response.getStatusCode());
+        } catch (HttpServerErrorException e) {
+            log.error("HTTP 500 Error Response: {}", e.getResponseBodyAsString());
+            throw e; // 예외를 다시 던져서 처리
+        }
+
+        return RegisterResponse.Success.builder()
+                .phone(newAccount.getPhoneNumber())
                 .email(newAccount.getEmail())
                 .nickname(newMember.getNickname())
-                .build();
-    }
+                .build();    }
 
     private void validateRegisterRequest(RegisterRequest.Create joinDto) { //TODO 도메인 서비스로 이동
 //        if (!joinDto.isValidPassword()) {
