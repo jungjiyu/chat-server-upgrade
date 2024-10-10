@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Transactional
 @RequiredArgsConstructor
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    public void createMember(@RequestBody MemberDto memberDto) {
+    public void createMember( MemberDto memberDto) {
         checkSystemAuthorization();
 
         if(memberDto.getId()==null){

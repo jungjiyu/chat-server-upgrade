@@ -1,4 +1,4 @@
-package com.chat.kit.my_util.account.util;
+package com.chat.kit.my_util.token.util;
 
 public class JwtProperties {
     public static final long ACCESS_TOKEN_EXPIRE_TIME = 5 * 60;               // 액세스 토큰 5분

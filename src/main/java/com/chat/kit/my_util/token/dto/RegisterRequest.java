@@ -1,4 +1,4 @@
-package com.chat.kit.my_util.account.dto;
+package com.chat.kit.my_util.token.dto;
 
 import com.chat.kit.my_util.account.entity.Account;
 import com.chat.kit.my_util.account.enums.Gender;

@@ -20,6 +20,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                        .requestMatchers("/token/**").permitAll() // 임시 토큰 발급 path
                         .requestMatchers("/ws/**").permitAll() // 웹소켓 연결 허용
                         .requestMatchers("/h2-console/**").permitAll() // H2 콘솔 접근 허용
                         .requestMatchers("/accounts/**").permitAll() // 토큰 발급

@@ -1,7 +1,7 @@
-package com.chat.kit.my_util.account.dto;
+package com.chat.kit.my_util.token.dto;
 
 import com.chat.kit.api.response.common.error.ErrorCode;
-import com.chat.kit.my_util.account.enums.SuccessCode;
+import com.chat.kit.my_util.token.enums.SuccessCode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;

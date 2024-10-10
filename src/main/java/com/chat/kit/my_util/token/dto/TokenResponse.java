@@ -1,5 +1,4 @@
-package com.chat.kit.my_util.account.dto;
-
+package com.chat.kit.my_util.token.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -7,15 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public class RegisterResponse {
+public class TokenResponse {
     @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Success{
-        private String email;
-        private String phone;
-        private String nickname;
+        private String token;
     }
 
     @Data

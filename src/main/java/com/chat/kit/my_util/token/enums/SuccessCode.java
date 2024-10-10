@@ -1,4 +1,4 @@
-package com.chat.kit.my_util.account.enums;
+package com.chat.kit.my_util.token.enums;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
  * 앞 세자리 : HttpStatus 코드
  */
 @AllArgsConstructor
-public enum SuccessCode  {
+public enum SuccessCode {
     OK(HttpStatus.OK, HttpStatus.OK.name()),
     Deleted(HttpStatus.OK, "Deleted"),
     Modified(HttpStatus.OK, "Modified"),
